@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Item - {{ item.name }} - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>Edit Item: {{ item.name }}</h2>
+    <p>From list: {{ item.shopping_list.name }} ({{ item.shopping_list.date.strftime('%Y-%m-%d') }})</p>
+
+    <form method="POST" action="{{ url_for('main.edit_item', item_id=item.id) }}">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.category.label }}<br>
+            {{ form.category(size=32) }}<br>
+            {% for error in form.category.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.amount.label }}<br>
+            {{ form.amount(size=32) }}<br>
+            {% for error in form.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.free_text.label }} (Notes)<br>
+            {{ form.free_text(rows=3, cols=30) }}<br>
+            {% for error in form.free_text.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.bought.label }}<br>
+            {{ form.bought() }}<br>
+            {% for error in form.bought.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <p><a href="{{ url_for('main.view_list_items', list_id=item.shopping_list.id) }}">Back to List</a></p>
+{% endblock %}

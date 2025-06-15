@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Items for {{ shopping_list.name }} - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>Items for: {{ shopping_list.name }} ({{ shopping_list.date.strftime('%Y-%m-%d') }})</h2>
+    <p>Household: <a href="{{ url_for('main.view_household_lists', household_id=shopping_list.household.id) }}">{{ shopping_list.household.name }}</a></p>
+    <p><a href="{{ url_for('main.add_item_to_list', list_id=shopping_list.id) }}">Add New Item</a></p>
+
+    {% if items and items.count() > 0 %} {# Assuming items is a dynamic query #}
+        <ul>
+            {% for item in items %}
+                <li style="{{ 'text-decoration: line-through;' if item.bought else '' }}">
+                    <strong>{{ item.name }}</strong>
+                    {% if item.category %}(Category: {{ item.category }}){% endif %}
+                    {% if item.amount %}(Amount: {{ item.amount }}){% endif %}
+                    {% if item.free_text %}<p><em>Notes: {{ item.free_text }}</em></p>{% endif %}
+
+                    <div style="display: inline-block; margin-left: 10px;">
+                        <form method="POST" action="{{ url_for('main.toggle_item_bought', item_id=item.id) }}" style="display:inline;">
+                            <input type="submit" value="{{ 'Mark Unbought' if item.bought else 'Mark Bought' }}">
+                        </form>
+                        | <a href="{{ url_for('main.edit_item', item_id=item.id) }}">Edit</a> |
+                        <form method="POST" action="{{ url_for('main.delete_item', item_id=item.id) }}" style="display:inline;">
+                            <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this item?');">
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This shopping list has no items yet.</p>
+    {% endif %}
+    <p><a href="{{ url_for('main.view_household_lists', household_id=shopping_list.household.id) }}">Back to Lists for {{ shopping_list.household.name }}</a></p>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}My Households - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>My Households</h2>
+    {% if households %}
+        <ul>
+            {% for household in households %}
+                <li>
+                    <a href="{{ url_for('main.view_household_lists', household_id=household.id) }}">{{ household.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You are not a member of any households yet.</p>
+    {% endif %}
+    <p><a href="{{ url_for('main.create_household') }}">Create a New Household</a></p>
+{% endblock %}

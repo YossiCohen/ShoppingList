@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Shopping List App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> {# Basic CSS hook #}
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a> |
+        {% if current_user.is_authenticated %}
+            <span>Hi, {{ current_user.username }}!</span> |
+            <a href="{{ url_for('main.view_households') }}">My Households</a> |
+            <a href="{{ url_for('main.create_household') }}">Create Household</a> |
+            <a href="{{ url_for('main.logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('main.login') }}">Login</a> |
+            <a href="{{ url_for('main.register') }}">Register</a>
+        {% endif %}
+    </nav>
+    <hr>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Shopping List App</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Lists for {{ household.name }} - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>Shopping Lists for {{ household.name }}</h2>
+    <p><a href="{{ url_for('main.create_shopping_list', household_id=household.id) }}">Create New List</a></p>
+
+    {% if shopping_lists and shopping_lists.count() > 0 %} {# Assuming shopping_lists is a dynamic query #}
+        <ul>
+            {% for slist in shopping_lists %}
+                <li>
+                    <strong><a href="{{ url_for('main.view_list_items', list_id=slist.id) }}">{{ slist.name }}</a></strong>
+                    ({{ slist.date.strftime('%Y-%m-%d') }})
+                    <form method="POST" action="{{ url_for('main.delete_shopping_list', list_id=slist.id) }}" style="display:inline; margin-left: 10px;">
+                        <input type="submit" value="Delete List" onclick="return confirm('Are you sure you want to delete this entire list?');">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This household has no shopping lists yet.</p>
+    {% endif %}
+    <p><a href="{{ url_for('main.view_households') }}">Back to My Households</a></p>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Add Item to {{ shopping_list.name }} - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>Add Item to: {{ shopping_list.name }} ({{ shopping_list.date.strftime('%Y-%m-%d') }})</h2>
+    <form method="POST" action="{{ url_for('main.add_item_to_list', list_id=shopping_list.id) }}">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.category.label }}<br>
+            {{ form.category(size=32) }}<br>
+            {% for error in form.category.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.amount.label }}<br>
+            {{ form.amount(size=32) }}<br>
+            {% for error in form.amount.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.free_text.label }} (Notes)<br>
+            {{ form.free_text(rows=3, cols=30) }}<br> {# Basic styling for textarea-like behavior #}
+            {% for error in form.free_text.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <p><a href="{{ url_for('main.view_list_items', list_id=shopping_list.id) }}">Back to List</a></p>
+{% endblock %}
