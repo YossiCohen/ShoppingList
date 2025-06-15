@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Shopping List App{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Shopping List App!</h2>
+    {% if current_user.is_authenticated %}
+        <p>You are logged in as {{ current_user.username }}.</p>
+        {# Add links to households, shopping lists etc. later #}
+    {% else %}
+        <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('register') }}">register</a> to continue.</p>
+    {% endif %}
+{% endblock %}
